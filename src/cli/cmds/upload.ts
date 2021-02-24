@@ -1,0 +1,39 @@
+import * as path from 'path';
+import * as yargs from 'yargs';
+import { Upload } from '../upload';
+
+
+class Command implements yargs.CommandModule {
+  public readonly command = 'upload [FILE] [BUCKET] [OPTIONS]';
+  public readonly describe = 'Upload local file to S3 bucket and return presign URL';
+
+  public buillder(args: yargs.Argv) {
+    args.positional('FILE', { describe: 'Local file to upload', type: 'string' });
+    args.positional('BUCKET', { describe: 'S3 bucket', type: 'string' });
+    args.option('ttl', { type: 'number', default: 86400*7, desc: 'TTL of the presign URL in seconds' });
+    args.example('s3s upload ./image.jpg my-bucket-name', 'Upload ./image.jpg to s3://my-bucket-name');
+    return args;
+  }
+
+  public async handler(args: any) {
+    if (args.debug) console.log(args);
+    const filepath = args.FILE;
+    const bucket = args.BUCKET;
+    const objectKey = path.basename(filepath);
+    const ttl = args.ttl ?? 86400*7;
+    if (args.debug) console.log(`Uploading ${filepath} to ${bucket} with TTL=${ttl}s`);
+
+    new Upload({
+      bucket,
+      filepath,
+      key: objectKey,
+      expires: ttl,
+    })
+      .upload()
+      .catch( err => console.log(err) );
+  }
+}
+
+module.exports = new Command();
+
+
