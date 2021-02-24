@@ -4,7 +4,7 @@ import { Upload } from '../upload';
 
 
 class Command implements yargs.CommandModule {
-  public readonly command = 'upload [FILE] [BUCKET] [OPTIONS]';
+  public readonly command = 'upload <FILE> <BUCKET> [OPTIONS]';
   public readonly describe = 'Upload local file to S3 bucket and return presign URL';
 
   public buillder(args: yargs.Argv) {
@@ -21,13 +21,14 @@ class Command implements yargs.CommandModule {
     const bucket = args.BUCKET;
     const objectKey = path.basename(filepath);
     const ttl = args.ttl ?? 86400*7;
-    if (args.debug) console.log(`Uploading ${filepath} to ${bucket} with TTL=${ttl}s`);
+    if (args.debug) console.log(`Upload ${filepath} to s3://${bucket}/${objectKey} with TTL=${ttl}s`);
 
     new Upload({
       bucket,
       filepath,
       key: objectKey,
       expires: ttl,
+      debug: args.debug,
     })
       .upload()
       .catch( err => console.log(err) );

@@ -16,16 +16,19 @@ export interface UploadProps {
    * @default true
    */
   readonly presignUrl?: boolean;
+  /**
+   * debug mode
+   * @default false
+   */
+  readonly debug?: boolean;
 
 }
 
 export class Upload {
   readonly options: UploadProps;
   readonly s3client: AWS.S3;
-  private debug: boolean;
   constructor(options: UploadProps) {
     this.options = options;
-    this.debug = process.env.debug === 'true';
     var credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE ?? 'default' });
     AWS.config.credentials = credentials;
     this.s3client = new AWS.S3({
@@ -33,7 +36,7 @@ export class Upload {
     });
   }
   public async upload() {
-    if (this.debug) console.log(`start uploading ${this.options.filepath} to s3://${this.options.bucket}/${this.options.key}`);
+    if (this.options.debug) console.log(`Start uploading ${this.options.filepath} to s3://${this.options.bucket}/${this.options.key}`);
     const managedUpload = new AWS.S3.ManagedUpload({
       params: {
         Bucket: this.options.bucket,
@@ -46,10 +49,12 @@ export class Upload {
     await managedUpload.promise();
 
     if (this.options.presignUrl !== false) {
+      const ttl = this.options.expires ?? 86400 * 7;
+      if (this.options.debug) console.log(`Start setting TTL to ${ttl}`);
       const url = await this.s3client.getSignedUrlPromise('getObject', {
         Bucket: this.options.bucket,
         Key: this.options.key,
-        Expires: this.options.expires ?? 86400 * 7,
+        Expires: ttl,
       });
 
       console.log(url);
