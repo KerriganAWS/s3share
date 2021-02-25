@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/pahud/s3share/compare/v0.0.6...v0.0.7) (2021-02-25)
+
+
+### Features
+
+* support preupload command ([d0b8989](https://github.com/pahud/s3share/commit/d0b8989ac0743d635600a4e8c6a68750951ddca9))
+
 ### [0.0.6](https://github.com/pahud/s3share/compare/v0.0.5...v0.0.6) (2021-02-25)
 
 
