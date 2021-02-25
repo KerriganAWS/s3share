@@ -6,17 +6,11 @@ Upload any local file to your private Amazon S3 bucket and return a presigned UR
 
 ```sh
 
-# upload and generate a URL
+# upload a local file to s3 bucket and return a presign URL for private download
 npx s3share upload FILE BUCKET [OPTIONS] 
-# generate a URL for upload later
+# generate a presign URL for private upload later
 npx s3share preupload S3URI [OPTIONS]
 ```
-## COMMAND
-
-`upload` - upload a local file to s3 bucket and return a presign URL for private download
-
-`preupload` - generate a presign URL for private upload
-
 
 # Sample
 
