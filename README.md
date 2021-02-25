@@ -14,6 +14,7 @@ npx s3share preupload S3URI [OPTIONS]
 ## COMMAND
 
 `upload` - upload a local file to s3 bucket and return a presign URL for private download
+
 `preupload` - generate a presign URL for private upload
 
 
