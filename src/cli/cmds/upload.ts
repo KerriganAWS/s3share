@@ -11,6 +11,7 @@ class Command implements yargs.CommandModule {
     args.positional('FILE', { describe: 'Local file to upload', type: 'string' });
     args.positional('BUCKET', { describe: 'S3 bucket', type: 'string' });
     args.option('ttl', { type: 'number', default: 86400*7, desc: 'TTL of the presign URL in seconds' });
+    args.option('quiet', { type: 'boolean', default: false, desc: 'mute the output' });
     args.example('s3s upload ./image.jpg my-bucket-name', 'Upload ./image.jpg to s3://my-bucket-name');
     return args;
   }
@@ -21,7 +22,9 @@ class Command implements yargs.CommandModule {
     const bucket = args.BUCKET;
     const objectKey = path.basename(filepath);
     const ttl = args.ttl ?? 86400*7;
-    if (args.debug) console.log(`Upload ${filepath} to s3://${bucket}/${objectKey} with TTL=${ttl}s`);
+    const quiet = args.quiet ?? false;
+
+    if (!quiet) console.log(`Upload ${filepath} to s3://${bucket}/${objectKey} with TTL=${ttl}s`);
 
     new Upload({
       bucket,
