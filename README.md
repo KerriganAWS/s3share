@@ -5,7 +5,11 @@ Upload any local file to your private Amazon S3 bucket and return a presigned UR
 # Usage
 
 ```sh
-npx s3share COMMAND FILE BUCKET [OPTIONS]
+
+# upload and generate a URL
+npx s3share upload FILE BUCKET [OPTIONS] 
+# generate a URL for upload later
+npx s3share preupload S3URI [OPTIONS]
 ```
 ## COMMAND
 

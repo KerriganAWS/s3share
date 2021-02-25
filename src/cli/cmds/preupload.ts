@@ -19,7 +19,7 @@ class Command implements yargs.CommandModule {
     if (args.debug) console.log(args);
     const ttl = args.ttl ?? 86400 * 7;
     const s3url = args.S3URL;
-    const split = s3url.match(/s3:\/\/([^\/]+)\/?(.+)/)
+    const split = s3url.match(/s3:\/\/([^\/]+)\/?(.+)/);
     const bucket = split[1];
     const objectKey = split[2];
     const quiet = args.quiet ?? false;
