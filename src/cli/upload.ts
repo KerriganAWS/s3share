@@ -72,7 +72,7 @@ export class Upload {
 
     const ttl = this.options.expires ?? 86400 * 7;
     if (this.options.debug) console.log(`Start setting TTL to ${ttl}`);
-    console.log(`bucket=${this.options.bucket} key=${this.options.key}`);
+    if (this.options.debug) console.log(`bucket=${this.options.bucket} key=${this.options.key}`);
     const url = await this.s3client.getSignedUrlPromise('putObject', {
       Bucket: this.options.bucket,
       Key: this.options.key,
