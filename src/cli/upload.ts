@@ -5,7 +5,12 @@ import * as AWS from 'aws-sdk';
 export interface UploadProps {
   readonly bucket: string;
   readonly key: string;
-  readonly filepath: string;
+  /**
+   * local filepath to upload
+   *
+   * @default - no upload
+   */
+  readonly filepath?: string;
   /**
    * expiration in seconds of the object presigned URL
    * @default - 7 days
@@ -41,7 +46,7 @@ export class Upload {
       params: {
         Bucket: this.options.bucket,
         Key: this.options.key,
-        Body: readFileStream(this.options.filepath),
+        Body: readFileStream(this.options.filepath!),
       },
       service: this.s3client,
     });
@@ -60,12 +65,26 @@ export class Upload {
       console.log(url);
     }
   }
+  public async preupload() {
+    if (this.options.debug) {
+      console.log(`Start creating presign URL for s3://${this.options.bucket}/${this.options.key}`);
+    }
+
+    const ttl = this.options.expires ?? 86400 * 7;
+    if (this.options.debug) console.log(`Start setting TTL to ${ttl}`);
+    console.log(`bucket=${this.options.bucket} key=${this.options.key}`);
+    const url = await this.s3client.getSignedUrlPromise('putObject', {
+      Bucket: this.options.bucket,
+      Key: this.options.key,
+      Expires: ttl,
+    });
+
+    console.log(url);
+  }
   public async presign() {
     console.log('start presign URL');
-
   }
 }
-
 
 function readFileStream(filepath: string): ReadStream {
   var readStream: ReadStream = createReadStream(filepath);
