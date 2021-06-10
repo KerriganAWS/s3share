@@ -1,4 +1,6 @@
-const { TypeScriptProject } = require('projen');
+const { TypeScriptProject, DependenciesUpgradeMechanism } = require('projen');
+
+const AUTOMATION_TOKEN = 'PROJEN_GITHUB_TOKEN';
 
 const project = new TypeScriptProject ({
   authorName: 'Pahud Hsieh',
@@ -9,8 +11,21 @@ const project = new TypeScriptProject ({
   jsiiFqn: 'projen.TypeScriptAppProject',
   name: 's3share',
   deps: ['aws-sdk', 'yargs'],
-  dependabot: false,
+  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow({
+    workflowOptions: {
+      labels: ['auto-approve', 'auto-merge'],
+      secret: AUTOMATION_TOKEN,
+    },
+  }),
+  autoApproveOptions: {
+    secret: 'GITHUB_TOKEN',
+    allowedUsernames: ['pahud'],
+  },
   releaseToNpm: true,
+});
+
+project.package.addField('resolutions', {
+  'trim-newlines': '3.0.1',
 });
 
 project.addBins({ s3share: 'bin/s3share' });
