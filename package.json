@@ -30,7 +30,7 @@
     "organization": false
   },
   "devDependencies": {
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^26.0.24",
     "@types/node": "^10.17.0",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
@@ -48,7 +48,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "aws-sdk": "^2.939.0",
+    "aws-sdk": "^2.940.0",
     "yargs": "^16.2.0"
   },
   "bundledDependencies": [],
