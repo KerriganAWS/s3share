@@ -25,7 +25,8 @@ const project = new TypeScriptProject ({
 });
 
 project.package.addField('resolutions', {
-  'trim-newlines': '3.0.1',
+  'pac-resolver': '^5.0.0',
+  'set-value': '^4.0.1',
 });
 
 project.addBins({ s3share: 'bin/s3share' });
