@@ -10,7 +10,6 @@ const project = new TypeScriptProject ({
   defaultReleaseBranch: 'main',
   jsiiFqn: 'projen.TypeScriptAppProject',
   name: 's3share',
-  minNodeVersion: '12.20.0',
   deps: ['aws-sdk', 'yargs'],
   depsUpgradeOptions: {
     ignoreProjen: false,
